@@ -1,4 +1,4 @@
-![Backless Dress](resources/backless-dress.png)
+![Backless Dress](resources/backless-dress-small.png)
 
 # Backless Dress
 
