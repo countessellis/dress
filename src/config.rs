@@ -82,9 +82,11 @@ impl Config {
       match arg.as_str() {
         option => {
           if option.starts_with("--") {
-            match args.next() {
-              Some(value) => { config.insert(option.to_string(),value.to_string()); },
-              None => {},
+            if let Some(option) = option.strip_prefix("--") {
+              match args.next() {
+                Some(value) => { config.insert(option.to_string(),value.to_string()); },
+                None => {},
+              }
             }
           }
         },
