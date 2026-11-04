@@ -27,11 +27,15 @@ pub(crate) const DEFAULT_LOG_TARGET:           LogTarget                        
 //pub(crate) const DEFAULT_LOG_TARGET:           LogTarget                                   = LogTarget::File(DEFAULT_LOG_DIR, DEFAULT_LOG_FILE);
 
 // Backless Dress Defaults:
-pub(crate) const DEFAULT_MODE: &str = "CLI";
-pub(crate) const MODE_LIST:    &[&str] = &[ "cli","tui","gui","web","help"];
+pub(crate) const DEFAULT_MODE:       &str = "CLI";
+pub(crate) const MODE_LIST:          &[&str] = &[ "cli","tui","gui","web","help"];
+pub(crate) const DEFAULT_LLM_SERVER: &str = "http://localhost:11434/api/generate";
+pub(crate) const DEFAULT_MODEL:      &str = "gemma3:4b-it-qat";
 
 
 // Includes:
-pub(crate) const SPLASH_PNG:    &[u8] = include_bytes!("../resources/backless-dress.png");
-pub(crate) const SPLASH_TXT:    &str  = include_str!("../resources/backless-dress.txt");
-pub(crate) const HELP_TEMPLATE: &str  = include_str!("../resources/help.tpl");
+pub(crate) const SPLASH_PNG:             &[u8] = include_bytes!("../resources/backless-dress.png");
+pub(crate) const SPLASH_TXT:             &str  = include_str!("../resources/backless-dress.txt");
+pub(crate) const HELP_TEMPLATE:          &str  = include_str!("../resources/help.tpl");
+pub(crate) const SYSTEM_PROMPT_TEMPLATE: &str  = include_str!("../resources/system_prompt.tpl");
+pub(crate) const USER_PROMPT_TEMPLATE:   &str  = include_str!("../resources/user_prompt.tpl");

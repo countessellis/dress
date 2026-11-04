@@ -1,4 +1,5 @@
 use crate::config::*;
+use crate::llm::*;
 use crate::source::*;
 
 ///////////// CLI
@@ -7,6 +8,7 @@ use crate::source::*;
 pub(crate) struct CLI {
   pub(crate) config: Config,
   pub(crate) source: Option<Source>,
+  pub(crate) llm:    LLM,
 }
 
 impl CLI {
@@ -14,12 +16,18 @@ impl CLI {
     CLI {
      config: config.clone(),
      source: Source::load(&config.get("source")),
+     llm:    LLM::init(&config),
     }
   }
 
-  pub(crate) fn analyze(&self) {
+  pub(crate) fn analyze(&mut self) {
     match self.source {
-      Some(ref source) => println!("{}",source.text),
+      Some(ref source) => {
+        match self.llm.parse(&source.text) {
+          Ok(result) => println!("{}",result),
+          Err(err)   => log::error!("LLM analysis failed: {}",err),
+        }
+      }
       None => {},
     }
   }

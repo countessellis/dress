@@ -5,6 +5,7 @@ use std::{
 };
 
 use crate::defaults::*;
+use crate::fields::*;
 
 pub(crate) fn build_path(path: &String, prefix: &String) -> String {
   let prefix: String = prefix.strip_suffix('/').unwrap_or(prefix).to_string();
@@ -49,10 +50,10 @@ pub(crate) fn bin_name() -> String {
   BUILD_NAME.to_string()
 }
 
-pub(crate) fn render(template: &str, fields: &HashMap<&str,String>) -> String {
+pub fn render(template: &str, fields: &Fields) -> String {
   let mut prompt: String = template.to_string();
-  for (key,value) in fields {
-    prompt = prompt.replace(&format!("{{{{{}}}}}",key.to_uppercase()),value);
+  for (key,value) in &fields.fields {
+    prompt = prompt.replace(&format!("{{{{{}}}}}",key.to_uppercase()),&value.trim());
   }
   prompt
 }

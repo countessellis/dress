@@ -16,7 +16,7 @@ pub fn run() {
   let mode: Mode = Mode::mode();
   match mode {
     Mode::CLI => {
-      let cli: CLI = CLI::new(&config);
+      let mut cli: CLI = CLI::new(&config);
       cli.analyze();
     },
     Mode::Help => {

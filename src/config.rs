@@ -6,6 +6,8 @@ use std::{
 
 use crate::util;
 
+use crate::defaults::*;
+
 ///////////// Config
 
 #[derive(Debug, Clone)]
@@ -54,6 +56,8 @@ impl Config {
     log::debug!("Loading config with defaults.");
     self.config = HashMap::from([
       ("ranas".to_string(),util::bin_name()),
+      ("llm_server".to_string(),DEFAULT_LLM_SERVER.to_string()),
+      ("model".to_string(),DEFAULT_MODEL.to_string()),
     ]);
   }
 

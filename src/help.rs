@@ -3,6 +3,7 @@ use std::collections::HashMap;
 
 use crate::config::*;
 use crate::defaults::*;
+use crate::fields::*;
 
 use crate::util;
 
@@ -19,13 +20,13 @@ impl fmt::Display for Help {
       format!("  --mode <MODE>                        Mode to run in, (default: {}, choices: {}",DEFAULT_MODE,MODE_LIST.join(", ")),
       format!("  --help                               Display this help message"),
     ];
-    let fields: HashMap<&str,String> = HashMap::from([
+    let fields: Fields = Fields::new(&HashMap::from([
       ("RUNAS",self.config.get("ranas")),
       ("DESCRIPTION",DESCRIPTION.to_string()),
       ("DETAILS",details.join("\n")),
       ("COPYRIGHT",COPYRIGHT.to_string()),
       ("AUTHORS",AUTHORS.to_string()),
-    ]);
+    ]));
     let help: String = util::render(&HELP_TEMPLATE.to_string(),&fields);
     write!(f, "{}",help)
   }
