@@ -21,8 +21,8 @@ pub(crate) struct Source {
 impl Source {
   pub(crate) fn load(source: &String) -> Option<Source> {
     let text: String = if source.starts_with("http") {
-    let tls_config = TlsConfig::builder().provider(TlsProvider::NativeTls).disable_verification(true).build();
-    let agent: Agent = Config::builder().tls_config(tls_config).build().into();
+      let tls_config = TlsConfig::builder().provider(TlsProvider::NativeTls).disable_verification(true).build();
+      let agent: Agent = Config::builder().tls_config(tls_config).build().into();
       let mut response = match agent.get(source).call() {
         Ok(response) => response,
         Err(err)     => {
@@ -65,10 +65,17 @@ impl Source {
         return None;
       }
     } else if Path::new(source).is_file() {
+      let path = Path::new(source);
       match fs::read_to_string(source) {
         Ok(text) => {
           log::info!("Loaded source from {}.",source);
-          text
+          let extension = path.extension().and_then(|ext| ext.to_str()).map(|ext| ext.to_lowercase());
+          match extension.as_deref() {
+            Some("html")|Some("htm") => {
+              Self::convert_html(&text)
+            },
+            _ => text,
+          }
         },
         Err(err) => {
           log::error!("Failed to import source from {}: {}",source,err);
