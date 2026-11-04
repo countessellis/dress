@@ -1,7 +1,9 @@
 use html2md::parse_html;
+use regex::Regex;
 use std::{
   fs,
   path::Path,
+  sync::OnceLock,
 };
 use ureq::{
   Agent,
@@ -30,12 +32,19 @@ impl Source {
       };
       let status_code = response.status();
       if status_code.is_success() {
-        match response.body_mut().with_config().limit(100000).read_to_vec() {
+        match response.body_mut().with_config().limit(5000000).read_to_vec() {
           Ok(bytes) => {
-            match String::from_utf8(bytes.to_vec()) {
+            match String::from_utf8(bytes) {
               Ok(body) => {
-                let text: String = parse_html(&body);
-                text.lines().map(str::trim).filter(|line| !line.is_empty()).collect::<Vec<_>>().join("\n")
+                let content_type: Option<&str> = response.headers().get("content-type").and_then(|content_type| content_type.to_str().ok());
+                if content_type.map_or(false, |ct| ct.contains("text/html")) {
+                  Self::convert_html(&body)
+                } else {
+                  if content_type.is_none() {
+                    log::warn!("No Content-Type header present in the response.");
+                  }
+                  body
+                }
               },
               Err(err) => {
                 log::error!("Failed to parse source from response from {}: {}",source,err);
@@ -70,5 +79,27 @@ impl Source {
     Some(Source {
      text: text,
     })
+  }
+
+  fn convert_html(text: &String) -> String {
+    static JSON_LD_REGEX: OnceLock<Regex> = OnceLock::new();
+    let mut text = text.clone();
+    let script_regex = JSON_LD_REGEX.get_or_init(|| {
+      Regex::new(r#"(?is)<script[^>]*type=["']application/ld\+json["'][^>]*>(.*?)</script>"#).unwrap()
+    });
+    for cap in script_regex.captures_iter(&text) {
+      let text: &str = cap[1].trim();
+      if text.contains(r#""@type": "Recipe""#) || text.contains(r#""@type": "HowTo""#) {
+        let text: String = text.to_string();
+        let markdown_text: String = parse_html(&text);
+        return markdown_text.lines().map(str::trim).filter(|line| !line.is_empty()).collect::<Vec<_>>().join("\n");
+      }
+    }
+    static SCRIPT_REMOVE: OnceLock<Regex> = OnceLock::new();
+    static STYLE_REMOVE: OnceLock<Regex> = OnceLock::new();
+    let no_scripts = SCRIPT_REMOVE.get_or_init(|| Regex::new(r#"(?is)<script[^>]*>.*?</script>"#).unwrap()).replace_all(&text, "");
+    let text = STYLE_REMOVE.get_or_init(|| Regex::new(r#"(?is)<style[^>]*>.*?</style>"#).unwrap()).replace_all(&no_scripts, "");
+    let markdown_text: String = parse_html(&text);
+    markdown_text.lines().map(str::trim).filter(|line| !line.is_empty()).collect::<Vec<_>>().join("\n")
   }
 }
