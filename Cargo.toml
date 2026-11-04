@@ -17,10 +17,13 @@ name = "backless_dress"
 path = "src/lib.rs"
 
 [dependencies]
-env_logger = "0.11.11"
-log = "0.4.35"
-mimalloc = "0.1.52"
-nu-ansi-term = "0.50.3"
+env_logger = "0.11"
+html2md = "0.2"
+log = "0.4"
+mimalloc = "0.1"
+nu-ansi-term = "0.50"
+openssl = { version = "0.10", features = ["vendored"] }
+ureq = { version = "3.0", default-features = false, features = ["native-tls","vendored"] }
 
 [build-dependencies]
 chrono = "0.4"
