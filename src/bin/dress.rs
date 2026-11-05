@@ -3,8 +3,8 @@ use mimalloc::MiMalloc;
 #[global_allocator]
 static GLOBAL: MiMalloc = MiMalloc;
 
-use ::backless_dress::init;
-use ::backless_dress::logger;
+use ::dress::init;
+use ::dress::logger;
 
 ///////////// Main
 

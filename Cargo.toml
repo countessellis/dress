@@ -1,19 +1,19 @@
 [package]
-name = "backless-dress"
+name = "dress"
 license = "MIT"
 authors = ["Bethany Davis <ellis@despoena.com>"]
 description = "A utility to find the dressings."
-repository = "https://github.com/countessellis/backless-dress"
+repository = "https://github.com/countessellis/dress"
 version = "0.1.0"
 edition = "2024"
-default-run = "backless-dress"
+default-run = "dress"
 
 [[bin]]
-name = "backless-dress"
-path = "src/bin/backless-dress.rs"
+name = "dress"
+path = "src/bin/dress.rs"
 
 [lib]
-name = "backless_dress"
+name = "dress"
 path = "src/lib.rs"
 
 [dependencies]

@@ -6,7 +6,7 @@ use env_logger::TimestampPrecision;
 use crate::logger::LogTarget;
 
 // Build Constants:
-pub(crate) const APP_NAME:   &str = "Backless Dress";
+pub(crate) const APP_NAME:   &str = "Dress";
 pub(crate) const BUILD_NAME: &str = env!("BUILD_NAME");
 pub(crate) const VERSION_ID: &str = env!("CARGO_PKG_VERSION");
 pub(crate) const BUILD_TIME: &str = env!("BUILD_TIME");
@@ -22,11 +22,11 @@ pub(crate) const DEFAULT_LOG_FORMAT_TIMESTAMP: Option<env_logger::fmt::Timestamp
 pub(crate) const DEFAULT_LOG_FORMAT_LEVEL:     bool                                        = true; // false;
 pub(crate) const DEFAULT_LOG_FORMAT_TARGET:    bool                                        = true; // false;
 pub(crate) const DEFAULT_LOG_DIR:              &'static str                                = "logs";
-pub(crate) const DEFAULT_LOG_FILE:             &'static str                                = "backless-dress.log";
+pub(crate) const DEFAULT_LOG_FILE:             &'static str                                = "dress.log";
 pub(crate) const DEFAULT_LOG_TARGET:           LogTarget                                   = LogTarget::Stdout;
 //pub(crate) const DEFAULT_LOG_TARGET:           LogTarget                                   = LogTarget::File(DEFAULT_LOG_DIR, DEFAULT_LOG_FILE);
 
-// Backless Dress Defaults:
+// Dress Defaults:
 pub(crate) const DEFAULT_MODE:       &str = "CLI";
 pub(crate) const MODE_LIST:          &[&str] = &[ "cli","tui","gui","web","help"];
 pub(crate) const DEFAULT_LLM_SERVER: &str = "http://localhost:11434/api/generate";
@@ -34,8 +34,8 @@ pub(crate) const DEFAULT_MODEL:      &str = "gemma3:4b-it-qat";
 
 
 // Includes:
-pub(crate) const SPLASH_PNG:             &[u8] = include_bytes!("../resources/backless-dress.png");
-pub(crate) const SPLASH_TXT:             &str  = include_str!("../resources/backless-dress.txt");
+pub(crate) const SPLASH_PNG:             &[u8] = include_bytes!("../resources/dress.png");
+pub(crate) const SPLASH_TXT:             &str  = include_str!("../resources/dress.txt");
 pub(crate) const HELP_TEMPLATE:          &str  = include_str!("../resources/help.tpl");
 pub(crate) const SYSTEM_PROMPT_TEMPLATE: &str  = include_str!("../resources/system_prompt.tpl");
 pub(crate) const USER_PROMPT_TEMPLATE:   &str  = include_str!("../resources/user_prompt.tpl");

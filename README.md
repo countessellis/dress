@@ -1,10 +1,10 @@
-![Backless Dress](resources/backless-dress-small.png)
+![Dress](resources/dress-small.png)
 
-# Backless Dress
+# Dress
 
 A utility for analyzing a set of instructions or a recipe and determine the "dressings" or ingredients needed in order of need.
 
-Backless Dress is inspired by Shazow's backless philosophy for apps, or at least my interpretation of it.
+Dress is inspired by Shazow's backless philosophy for apps, or at least my interpretation of it.
 
 A few notes:
 

@@ -83,23 +83,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "f2032f911046de80f0a198e0901378627c33f59ea0ac00e363d481118bd70a53"
 
 [[package]]
-name = "backless-dress"
-version = "0.1.0"
-dependencies = [
- "chrono",
- "env_logger",
- "html2md",
- "log",
- "mimalloc",
- "nu-ansi-term",
- "openssl",
- "regex",
- "serde",
- "serde_json",
- "ureq",
-]
-
-[[package]]
 name = "base64"
 version = "0.23.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -299,6 +282,23 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "d4b8a88685455ed29a21542a33abd9cb6510b6b129abadabdcef0f4c55bc8f61"
 dependencies = [
  "litrs",
+]
+
+[[package]]
+name = "dress"
+version = "0.1.0"
+dependencies = [
+ "chrono",
+ "env_logger",
+ "html2md",
+ "log",
+ "mimalloc",
+ "nu-ansi-term",
+ "openssl",
+ "regex",
+ "serde",
+ "serde_json",
+ "ureq",
 ]
 
 [[package]]
