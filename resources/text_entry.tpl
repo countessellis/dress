@@ -5,4 +5,5 @@
   </TEXTAREA>
   <HR>
   <BUTTON type=submit>Submit</BUTTON>
+  <BUTTON type="reset">Reset</BUTTON>
 </FORM></CENTER>

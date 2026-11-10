@@ -99,6 +99,8 @@ Copyright &copy; {} {}
                   ("GET","")|("GET","/")|("GET","/index.html") => {
                     log::info!("Received GET request for index.");
                     fields.insert("TEXT_ENTRY",util::render(TEXT_ENTRY_TEMPLATE,&fields));
+                    fields.insert("FILE_UPLOAD",util::render(FILE_UPLOAD_TEMPLATE,&fields));
+                    fields.insert("URL_ENTRY",util::render(URL_ENTRY_TEMPLATE,&fields));
                     fields.insert("BODY",util::render(TABS_TEMPLATE,&fields));
                     let body: String = util::render(INDEX_TEMPLATE,&fields);
                     let mut response = Response::from_string(body);
@@ -124,7 +126,28 @@ Copyright &copy; {} {}
                       let form: HashMap<String,String> = form_urlencoded::parse(&body).into_owned().collect();
                       match form.get(&"method".to_string()) {
                         Some(key) if key == "text_input" => {
+                          log::info!("Text input received.");
                           Self::analyze(form.get("source"),&mut llm,&mut fields);
+                        },
+                        Some(key) if key == "file_upload" => {
+                          log::info!("File upload received.");
+                          fields.insert("DISPLAY","WARN: File source not implemented yet.".to_string());
+                        },
+                        Some(key) if key == "url_input" => {
+                          if let Some(source) = form.get("source") {
+                            if source.starts_with("http") {
+                              log::info!("URL source {} received.",source);
+                              if let Some(source) = Source::load(&source) {
+                                Self::analyze(Some(&source.text),&mut llm,&mut fields);
+                              }
+                            } else {
+                              log::warn!("Invalid URL source {}!",source);
+                              fields.insert("DISPLAY","ERROR: URL source invalid, please provide a URL starting with http:// or https://".to_string());
+                            }
+                          } else {
+                            log::warn!("Missing URL source!");
+                            fields.insert("DISPLAY","ERROR: URL source missing, please provide a URL starting with http:// or https://".to_string());
+                          }
                         },
                         _ => {
                           fields.insert("DISPLAY","ERROR: please use the form!".to_string());
