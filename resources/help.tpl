@@ -4,7 +4,7 @@ Usage: {{RUNAS}} [(OPTIONS)]
 
 Options:
 
-{{DETAILS}}
+  {{DETAILS}}
 
 ©{{COPYRIGHT}} {{AUTHORS}}.
 

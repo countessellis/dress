@@ -38,14 +38,14 @@ impl Web {
 
   pub fn listen(&mut self) {
     let (incoming_tx,incoming_rx) = unbounded::<Request>();
-    let server = match tiny_http::Server::http(self.config.get("server_addr").clone()) {
+    let server = match tiny_http::Server::http(self.config.get("listen").clone()) {
       Ok(server) => server,
       Err(err) => {
         log::error!("Failed to initialize listener: {}",err);
         return;
       },
     };
-    log::info!("Listening on {}.",self.config.get("server_addr"));
+    log::info!("Listening on {}.",self.config.get("listen"));
     thread::spawn(move || {
       for request in server.incoming_requests() {
         if incoming_tx.send(request).is_err() {

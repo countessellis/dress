@@ -27,12 +27,12 @@ pub(crate) const DEFAULT_LOG_TARGET:           LogTarget                        
 //pub(crate) const DEFAULT_LOG_TARGET:           LogTarget                                   = LogTarget::File(DEFAULT_LOG_DIR, DEFAULT_LOG_FILE);
 
 // Dress Defaults:
-pub(crate) const DEFAULT_MODE:        &str = "CLI";
+pub(crate) const DEFAULT_MODE:        &str = "cli";
 pub(crate) const MODE_LIST:           &[&str] = &[ "cli","web","help"];
 pub(crate) const DEFAULT_LLM_SERVER:  &str = "http://localhost:11434/api/generate";
 pub(crate) const DEFAULT_MODEL:       &str = "gemma3:4b-it-qat";
 pub(crate) const DEFAULT_DELAY:       u64  = 60;
-pub(crate) const DEFAULT_SERVER_ADDR: &str = "0.0.0.0:13874";
+pub(crate) const DEFAULT_LISTEN_ADDR: &str = "0.0.0.0:13874";
 
 // Includes:
 pub(crate) const SPLASH_PNG:             &[u8] = include_bytes!("../resources/dress.png");

@@ -17,7 +17,11 @@ pub(crate) struct Help {
 impl fmt::Display for Help {
   fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
     let details: Vec<String> = vec![
-      format!("  --mode <MODE>                        Mode to run in, (default: {}, choices: {}",DEFAULT_MODE,MODE_LIST.join(", ")),
+      format!("  --mode <MODE>                        Mode to run in (default: {}, choices: {})",DEFAULT_MODE,MODE_LIST.join(", ")),
+      format!("  --llm_server                         LLM server to interpret  the text, ollama compatible, (default: {})",DEFAULT_LLM_SERVER),
+      format!("  --model                              LLM model to use to interpret the text (default: {})",DEFAULT_MODEL),
+      format!("  --listen                             In web mode, address and port to listen on (default: {})",DEFAULT_LISTEN_ADDR),
+      format!("  --source                             The text source, which can be a URL or a file path, no default."),
       format!("  --help                               Display this help message"),
     ];
     let fields: Fields = Fields::new(&HashMap::from([

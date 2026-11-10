@@ -29,7 +29,7 @@ impl Default for Mode {
 impl FromStr for Mode {
   type Err = &'static str;
   fn from_str(s: &str) -> Result<Self, Self::Err> {
-    match s {
+    match s.to_lowercase().as_str() {
       "cli"  => Ok(Mode::CLI),
       "web"  => Ok(Mode::Web),
       "help" => Ok(Mode::Help),
