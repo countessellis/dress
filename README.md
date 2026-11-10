@@ -1,4 +1,6 @@
+---
 ![Dress](resources/dress-small.png)
+---
 
 # Dress
 
@@ -36,6 +38,6 @@ Options:
 
 * [Shazow](https://shazow.net/)
 
-
+---
 
 ©2026 Bethany Davis <ellis@despoena.com>.
