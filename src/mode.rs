@@ -9,9 +9,7 @@ use crate::util;
 #[derive(Debug, Clone, PartialEq)]
 pub(crate) enum Mode {
   CLI,
-  TUI,
-  GUI,
-  WEB,
+  Web,
   Help,
 }
 
@@ -22,9 +20,7 @@ impl Default for Mode {
     let mode: &str = if let Some(index) = bin_name.find("-") { &bin_name[index+1..] } else { DEFAULT_MODE };
     match mode {
       "cli"  => Mode::CLI,
-      "tui"  => Mode::TUI,
-      "gui"  => Mode::GUI,
-      "web"  => Mode::WEB,
+      "web"  => Mode::Web,
       _      => Mode::CLI,
     }
   }
@@ -35,9 +31,7 @@ impl FromStr for Mode {
   fn from_str(s: &str) -> Result<Self, Self::Err> {
     match s {
       "cli"  => Ok(Mode::CLI),
-      "tui"  => Ok(Mode::TUI),
-      "gui"  => Ok(Mode::GUI),
-      "web"  => Ok(Mode::WEB),
+      "web"  => Ok(Mode::Web),
       "help" => Ok(Mode::Help),
       _      => Ok(Default::default()),
     }
@@ -48,9 +42,7 @@ impl fmt::Display for Mode {
   fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
     let mode: &str = match self {
       Mode::CLI  => "cli",
-      Mode::TUI  => "tui",
-      Mode::GUI  => "gui",
-      Mode::WEB  => "web",
+      Mode::Web  => "web",
       Mode::Help => "help",
     };
     write!(f, "{}",mode)
@@ -71,9 +63,7 @@ impl Mode {
           None        => {},
         },
         "--cli"  => return Mode::CLI,
-        "--tui"  => return Mode::TUI,
-        "--gui"  => return Mode::GUI,
-        "--web"  => return Mode::WEB,
+        "--web"  => return Mode::Web,
         "--help" => return Mode::Help,
         _ => {},
       }

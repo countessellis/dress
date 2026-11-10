@@ -12,3 +12,4 @@ pub(crate) mod source;
 pub(crate) mod splash;
 pub(crate) mod util;
 pub(crate) mod version;
+pub(crate) mod web;

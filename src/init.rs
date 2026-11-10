@@ -4,6 +4,7 @@ use crate::help::*;
 use crate::mode::*;
 use crate::splash::*;
 use crate::version::*;
+use crate::web::*;
 
 ///////////// Run
 
@@ -18,6 +19,10 @@ pub fn run() {
     Mode::CLI => {
       let mut cli: CLI = CLI::new(&config);
       cli.analyze();
+    },
+    Mode::Web => {
+      let mut web: Web = Web::new(&config);
+      web.listen();
     },
     Mode::Help => {
       let help: Help = Help::new(&config);

@@ -11,6 +11,8 @@ use ureq::{
   tls::{TlsConfig,TlsProvider}
 };
 
+use crate::llm::*;
+
 ///////////// Source
 
 #[derive(Clone)]
@@ -90,7 +92,7 @@ impl Source {
 
   fn convert_html(text: &String) -> String {
     static JSON_LD_REGEX: OnceLock<Regex> = OnceLock::new();
-    let mut text = text.clone();
+    let text = text.clone();
     let script_regex = JSON_LD_REGEX.get_or_init(|| {
       Regex::new(r#"(?is)<script[^>]*type=["']application/ld\+json["'][^>]*>(.*?)</script>"#).unwrap()
     });
@@ -108,5 +110,12 @@ impl Source {
     let text = STYLE_REMOVE.get_or_init(|| Regex::new(r#"(?is)<style[^>]*>.*?</style>"#).unwrap()).replace_all(&no_scripts, "");
     let markdown_text: String = parse_html(&text);
     markdown_text.lines().map(str::trim).filter(|line| !line.is_empty()).collect::<Vec<_>>().join("\n")
+  }
+
+  pub(crate) fn analyze(&mut self, llm: &mut LLM) {
+    match llm.parse(&self.text) {
+      Ok(result) => println!("{}",result),
+      Err(err)   => log::error!("LLM analysis failed: {}",err),
+    }
   }
 }

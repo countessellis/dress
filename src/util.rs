@@ -1,5 +1,4 @@
 use std::{
-  collections::HashMap,
   env,
   fs,
 };
@@ -56,5 +55,16 @@ pub fn render(template: &str, fields: &Fields) -> String {
     prompt = prompt.replace(&format!("{{{{{}}}}}",key.to_uppercase()),&value.trim());
   }
   prompt
+}
+
+// Helper:
+
+pub fn image(name: &str) -> &[u8] {
+  match name {
+    "/images/dress.png" => DRESS_SMALL_PNG,
+    "/images/banner.png" => BANNER_PNG,
+    "/images/watermark.png" => WATERMARK_PNG,
+    _ => &[],
+  }
 }
 

@@ -58,6 +58,7 @@ impl Config {
       ("ranas".to_string(),util::bin_name()),
       ("llm_server".to_string(),DEFAULT_LLM_SERVER.to_string()),
       ("model".to_string(),DEFAULT_MODEL.to_string()),
+      ("server_addr".to_string(),DEFAULT_SERVER_ADDR.to_string()),
     ]);
   }
 

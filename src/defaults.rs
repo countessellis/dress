@@ -27,15 +27,26 @@ pub(crate) const DEFAULT_LOG_TARGET:           LogTarget                        
 //pub(crate) const DEFAULT_LOG_TARGET:           LogTarget                                   = LogTarget::File(DEFAULT_LOG_DIR, DEFAULT_LOG_FILE);
 
 // Dress Defaults:
-pub(crate) const DEFAULT_MODE:       &str = "CLI";
-pub(crate) const MODE_LIST:          &[&str] = &[ "cli","tui","gui","web","help"];
-pub(crate) const DEFAULT_LLM_SERVER: &str = "http://localhost:11434/api/generate";
-pub(crate) const DEFAULT_MODEL:      &str = "gemma3:4b-it-qat";
-
+pub(crate) const DEFAULT_MODE:        &str = "CLI";
+pub(crate) const MODE_LIST:           &[&str] = &[ "cli","web","help"];
+pub(crate) const DEFAULT_LLM_SERVER:  &str = "http://localhost:11434/api/generate";
+pub(crate) const DEFAULT_MODEL:       &str = "gemma3:4b-it-qat";
+pub(crate) const DEFAULT_DELAY:       u64  = 60;
+pub(crate) const DEFAULT_SERVER_ADDR: &str = "0.0.0.0:13874";
 
 // Includes:
 pub(crate) const SPLASH_PNG:             &[u8] = include_bytes!("../resources/dress.png");
 pub(crate) const SPLASH_TXT:             &str  = include_str!("../resources/dress.txt");
+pub(crate) const DRESS_SMALL_PNG:        &[u8] = include_bytes!("../resources/dress-small.png");
+pub(crate) const WATERMARK_PNG:          &[u8] = include_bytes!("../resources/watermark-small.png");
+pub(crate) const FAVICON_ICO:            &[u8] = include_bytes!("../resources/favicon.ico");
+pub(crate) const BANNER_PNG:             &[u8] = include_bytes!("../resources/banner-small.png");
+pub(crate) const FRAME_PNG:              &[u8] = include_bytes!("../resources/frame.png");
 pub(crate) const HELP_TEMPLATE:          &str  = include_str!("../resources/help.tpl");
 pub(crate) const SYSTEM_PROMPT_TEMPLATE: &str  = include_str!("../resources/system_prompt.tpl");
 pub(crate) const USER_PROMPT_TEMPLATE:   &str  = include_str!("../resources/user_prompt.tpl");
+pub(crate) const CSS_TEMPLATE:           &str = include_str!("../resources/css.tpl");
+pub(crate) const INDEX_TEMPLATE:         &str = include_str!("../resources/index.tpl");
+pub(crate) const TABS_TEMPLATE:          &str = include_str!("../resources/tabs.tpl");
+pub(crate) const TEXT_ENTRY_TEMPLATE:    &str = include_str!("../resources/text_entry.tpl");
+

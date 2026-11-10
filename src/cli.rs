@@ -12,8 +12,8 @@ pub(crate) struct CLI {
 }
 
 impl CLI {
-  pub(crate) fn new(config: &Config) -> CLI {
-    CLI {
+  pub(crate) fn new(config: &Config) -> Self {
+    Self {
      config: config.clone(),
      source: Source::load(&config.get("source")),
      llm:    LLM::init(&config),
@@ -22,12 +22,7 @@ impl CLI {
 
   pub(crate) fn analyze(&mut self) {
     match self.source {
-      Some(ref source) => {
-        match self.llm.parse(&source.text) {
-          Ok(result) => println!("{}",result),
-          Err(err)   => log::error!("LLM analysis failed: {}",err),
-        }
-      }
+      Some(ref mut source) => source.analyze(&mut self.llm),
       None => {},
     }
   }
