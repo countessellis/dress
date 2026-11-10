@@ -1,4 +1,5 @@
 use crossbeam_channel::{unbounded,Receiver,Sender};
+use multipart_ng::server::Multipart;
 use std::{
   collections::HashMap,
   io::Read,
@@ -123,7 +124,41 @@ Copyright &copy; {} {}
                       log::error!("Failed to decode response, too large, expected less than 65536, received {}.",length);
                       Response::from_string("Payload Too Large").with_status_code(413)
                     } else {
-                      let form: HashMap<String,String> = form_urlencoded::parse(&body).into_owned().collect();
+                      let mut form = std::collections::HashMap::<String, String>::new();
+                      let mut file = Vec::<u8>::new();
+                      let content_type: Option<String> = request.headers().iter().find(|h| h.field.equiv("Content-Type")).map(|h| h.value.to_string());
+                      if let Some(content_type) = content_type && content_type.starts_with("multipart/form-data") && let Some(boundary) = content_type.split(';').map(|s| s.trim()).find(|s| s.starts_with("boundary=")).map(|s| s["boundary=".len()..].to_string()) {
+                        log::debug!("Multipart payload found, parsing.");
+                        let cursor = std::io::Cursor::new(&body);
+                        let mut multipart = multipart_ng::server::Multipart::with_body(cursor,boundary);
+                        loop {
+                          match multipart.read_entry() {
+                            Ok(Some(mut field)) => {
+                              let field_name = field.headers.name.to_string();
+                              if field_name == "source" {
+                                field.data.read_to_end(&mut file).unwrap();
+                              } else {
+                                let mut value = String::new();
+                                field.data.read_to_string(&mut value).unwrap();
+                                form.insert(field_name, value);
+                              }
+                            },
+                            Ok(None) => {
+                              log::debug!("Finished parsing multipart.");
+                              log::debug!("File length: {}, form field count: {}",file.len(),form.len());
+                              log::debug!("{:?}",form);
+                              break;
+                            },
+                            Err(err) => {
+                              log::error!("Multipart parsing failed: {}",err);
+                              break;
+                            },
+                          }
+                        }
+                      } else {
+                        log::debug!("Normal payload found, parsing.");
+                        form = form_urlencoded::parse(&body).into_owned().collect();
+                      }
                       match form.get(&"method".to_string()) {
                         Some(key) if key == "text_input" => {
                           log::info!("Text input received.");
@@ -131,7 +166,15 @@ Copyright &copy; {} {}
                         },
                         Some(key) if key == "file_upload" => {
                           log::info!("File upload received.");
-                          fields.insert("DISPLAY","WARN: File source not implemented yet.".to_string());
+                          match String::from_utf8(file) {
+                            Ok(source) => {
+                              Self::analyze(Some(&source),&mut llm,&mut fields);
+                            },
+                            Err(err) => {
+                              log::warn!("Failed to parse source from file: {}",err);
+                              fields.insert("DISPLAY","ERROR: File source isn't text, upload a text, markdown, or html file.".to_string());
+                            },
+                          }
                         },
                         Some(key) if key == "url_input" => {
                           if let Some(source) = form.get("source") {
