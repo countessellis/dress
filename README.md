@@ -1,5 +1,5 @@
----
 ![Dress](resources/dress-small.png)
+
 ---
 
 # Dress
@@ -13,6 +13,8 @@ A few notes:
 * Unlike most of my apps, this one doesn't use a config file. Everything is either defaults or arguments.
 * When sourcing from a website, cert verification is disabled. As the goal is pulling a known source, cert verification makes no sense.
 * In the initial version, analysis will be done with Ollama compatible self hosted.
+
+---
 
 ## Usage
 
@@ -28,6 +30,8 @@ Options:
   --listen                             In web mode, address and port to listen on (default: 0.0.0.0:13874)
   --source                             The text source, which can be a URL or a file path, no default.
   --help                               Display this help message
+
+---
 
 ## Reference:
 
