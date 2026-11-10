@@ -1,6 +1,8 @@
 ![Dress](resources/dress-small.png)
 
 ---
+---
+
 # Dress
 
 A utility for analyzing a set of instructions or a recipe and determine the "dressings" or ingredients needed in order of need.
@@ -13,7 +15,6 @@ A few notes:
 * When sourcing from a website, cert verification is disabled. As the goal is pulling a known source, cert verification makes no sense.
 * In the initial version, analysis will be done with Ollama compatible self hosted.
 
----
 ## Usage
 
 Usage: dress [(OPTIONS)]
@@ -29,7 +30,6 @@ Options:
   --source                             The text source, which can be a URL or a file path, no default.
   --help                               Display this help message
 
----
 ## Reference:
 
 * [Changelog](CHANGELOG.md)
