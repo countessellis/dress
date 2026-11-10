@@ -23,6 +23,7 @@ pub(crate) struct Source {
 impl Source {
   pub(crate) fn load(source: &String) -> Option<Source> {
     let text: String = if source.starts_with("http") {
+      log::info!("Source provided appears to be a web address: {}",source);
       let tls_config = TlsConfig::builder().provider(TlsProvider::NativeTls).disable_verification(true).build();
       let agent: Agent = Config::builder().tls_config(tls_config).build().into();
       let mut response = match agent.get(source).call() {
@@ -67,6 +68,7 @@ impl Source {
         return None;
       }
     } else if Path::new(source).is_file() {
+      log::info!("Source provided appears to be a local path: {}",source);
       let path = Path::new(source);
       match fs::read_to_string(source) {
         Ok(text) => {
@@ -112,10 +114,13 @@ impl Source {
     markdown_text.lines().map(str::trim).filter(|line| !line.is_empty()).collect::<Vec<_>>().join("\n")
   }
 
-  pub(crate) fn analyze(&mut self, llm: &mut LLM) {
+  pub(crate) fn analyze(&mut self, llm: &mut LLM) -> Option<String>{
     match llm.parse(&self.text) {
-      Ok(result) => println!("{}",result),
-      Err(err)   => log::error!("LLM analysis failed: {}",err),
+      Ok(result) => Some(format!("{}",result)),
+      Err(err)   => {
+        log::error!("LLM analysis failed: {}",err);
+        None
+      },
     }
   }
 }

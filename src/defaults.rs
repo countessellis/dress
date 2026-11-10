@@ -49,4 +49,5 @@ pub(crate) const CSS_TEMPLATE:           &str = include_str!("../resources/css.t
 pub(crate) const INDEX_TEMPLATE:         &str = include_str!("../resources/index.tpl");
 pub(crate) const TABS_TEMPLATE:          &str = include_str!("../resources/tabs.tpl");
 pub(crate) const TEXT_ENTRY_TEMPLATE:    &str = include_str!("../resources/text_entry.tpl");
+pub(crate) const DISPLAY_TEMPLATE:       &str = include_str!("../resources/display.tpl");
 

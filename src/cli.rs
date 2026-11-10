@@ -22,7 +22,7 @@ impl CLI {
 
   pub(crate) fn analyze(&mut self) {
     match self.source {
-      Some(ref mut source) => source.analyze(&mut self.llm),
+      Some(ref mut source) => if let Some(text) = source.analyze(&mut self.llm) { println!("{}",text); },
       None => {},
     }
   }

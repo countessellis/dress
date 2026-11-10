@@ -1,12 +1,13 @@
 use crossbeam_channel::{unbounded,Receiver,Sender};
 use std::{
   collections::HashMap,
+  io::Read,
   str::FromStr,
   thread,
   time::Duration,
 };
 use tiny_http::{Header,Request,Response};
-use url::Url;
+use url::{Url,form_urlencoded};
 
 use crate::util;
 
@@ -32,10 +33,6 @@ impl Web {
     }
   }
 
-  pub(crate) fn analyze(&mut self, source: &mut Source) {
-    source.analyze(&mut self.llm);
-  }
-
   pub fn listen(&mut self) {
     let (incoming_tx,incoming_rx) = unbounded::<Request>();
     let server = match tiny_http::Server::http(self.config.get("listen").clone()) {
@@ -55,9 +52,10 @@ impl Web {
       }
     });
     thread::spawn({
-      let incoming       = incoming_rx.clone();
+      let incoming = incoming_rx.clone();
+      let llm      = self.llm.clone();
       move || {
-        Self::process(&incoming);
+        Self::process(&incoming,&llm);
       }
     });
     loop {
@@ -65,7 +63,7 @@ impl Web {
     }
   }
 
-  pub(crate) fn process(incoming: &Receiver<Request>) {
+  pub(crate) fn process(incoming: &Receiver<Request>, llm: &LLM) {
     loop {
       for mut request in incoming.try_iter() {
         if let Some(remote) = request.remote_addr() {
@@ -75,29 +73,31 @@ impl Web {
             let path = parsed_url.path().to_string();
             log::info!("Request received for on {}",path);
             thread::spawn({
-              let remote = remote.clone();
+              let remote  = remote.clone();
+              let mut llm = llm.clone();
               move || {
-                let mut response = match (request.method().as_str(), path.as_str()) {
-                  ("GET","")|("GET","/")|("GET","/index.html") => {
-                    let mut fields: Fields = Fields::new(&HashMap::from([
-                      ("MENU",format!(
+                let mut fields: Fields = Fields::new(&HashMap::from([
+                  ("MENU",format!(
 "
 <HR>
 Home
 <HR>
 "
-                      )),
-                      ("BANNER","<IMG SRC=/images/banner.png ALT=Dress>".to_string()),
-                      ("TITLE","Dress".to_string()),
-                      ("SUBTITLE","".to_string()),
-                      ("COPYRIGHT",format!(
+                  )),
+                  ("BANNER","<IMG SRC=/images/banner.png ALT=Dress>".to_string()),
+                  ("TITLE","Dress".to_string()),
+                  ("SUBTITLE","".to_string()),
+                  ("COPYRIGHT",format!(
 "
 <HR>
 Copyright &copy; {} {}
 <HR>
 "
-                      ,COPYRIGHT,AUTHORS)),
-                    ]));
+                  ,COPYRIGHT,AUTHORS)),
+                ]));
+                let mut response = match (request.method().as_str(), path.as_str()) {
+                  ("GET","")|("GET","/")|("GET","/index.html") => {
+                    log::info!("Received GET request for index.");
                     fields.insert("TEXT_ENTRY",util::render(TEXT_ENTRY_TEMPLATE,&fields));
                     fields.insert("BODY",util::render(TABS_TEMPLATE,&fields));
                     let body: String = util::render(INDEX_TEMPLATE,&fields);
@@ -108,6 +108,38 @@ Copyright &copy; {} {}
                       log::error!("Failed to parse content type header, using default.");
                     }
                     response
+                  },
+                  ("POST","")|("POST","/")|("POST","/index.html") => {
+                    log::info!("Received POST request for index.");
+                    let mut handle = request.as_reader().take(65_536);
+                    let mut body = Vec::new();
+                    if handle.read_to_end(&mut body).is_err() {
+                      log::error!("Failed to read to end of body before client disconnected.");
+                      Response::from_string("Bad Request").with_status_code(400)
+                    } else if request.body_length() > Some(65_536) {
+                      let length = request.body_length().unwrap_or(0);
+                      log::error!("Failed to decode response, too large, expected less than 65536, received {}.",length);
+                      Response::from_string("Payload Too Large").with_status_code(413)
+                    } else {
+                      let form: HashMap<String,String> = form_urlencoded::parse(&body).into_owned().collect();
+                      match form.get(&"method".to_string()) {
+                        Some(key) if key == "text_input" => {
+                          Self::analyze(form.get("source"),&mut llm,&mut fields);
+                        },
+                        _ => {
+                          fields.insert("DISPLAY","ERROR: please use the form!".to_string());
+                        },
+                      }
+                      fields.insert("BODY",util::render(DISPLAY_TEMPLATE,&fields));
+                      let body: String = util::render(INDEX_TEMPLATE,&fields);
+                      let mut response = Response::from_string(body);
+                      if let Ok(content_type_header) = Header::from_str("Content-Type: text/html; charset=utf-8") {
+                        response = response.with_header(content_type_header);
+                      } else {
+                        log::error!("Failed to parse content type header, using default.");
+                      }
+                      response
+                    }
                   },
                   ("GET","/default.css") => {
                     let fields: Fields = Fields::new(&HashMap::from([
@@ -167,6 +199,23 @@ Copyright &copy; {} {}
           }
         }
       }
+    }
+  }
+
+  pub(crate) fn analyze(source: Option<&String>, llm: &mut LLM, fields: &mut Fields) {
+    if let Some(text) = source {
+      log::debug!("Source length: {}",text.len());
+      let mut source: Source = Source { text: text.clone() };
+      if let Some(text) = source.analyze(llm) {
+        log::debug!("Used LLM to analyze text length {}",text.len());
+        fields.insert("DISPLAY",text);
+      } else {
+        log::warn!("Failed to analyze text.");
+        fields.insert("DISPLAY","ERROR: failed to analyze text!".to_string());
+      }
+    } else {
+      log::warn!("No source provided.");
+      fields.insert("DISPLAY","ERROR: no source provided!".to_string());
     }
   }
 }
