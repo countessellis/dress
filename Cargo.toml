@@ -4,7 +4,7 @@ license = "MIT"
 authors = ["Bethany Davis <ellis@despoena.com>"]
 description = "A utility to find the dressings."
 repository = "https://github.com/countessellis/dress"
-version = "1.0.1"
+version = "1.0.0"
 edition = "2024"
 default-run = "dress"
 
