@@ -1,4 +1,4 @@
-use html2md::parse_html;
+use html2md::rewrite_html;
 use regex::Regex;
 use std::{
   fs,
@@ -100,9 +100,8 @@ impl Source {
     });
     for cap in script_regex.captures_iter(&text) {
       let text: &str = cap[1].trim();
-      if text.contains(r#""@type": "Recipe""#) || text.contains(r#""@type": "HowTo""#) {
-        let text: String = text.to_string();
-        let markdown_text: String = parse_html(&text);
+      if text.contains("\"@type\"") && (text.contains("\"Recipe\"") || text.contains("\"HowTo\"")) {
+        let markdown_text: String = rewrite_html(&text,false);
         return markdown_text.lines().map(str::trim).filter(|line| !line.is_empty()).collect::<Vec<_>>().join("\n");
       }
     }
@@ -110,7 +109,7 @@ impl Source {
     static STYLE_REMOVE: OnceLock<Regex> = OnceLock::new();
     let no_scripts = SCRIPT_REMOVE.get_or_init(|| Regex::new(r#"(?is)<script[^>]*>.*?</script>"#).unwrap()).replace_all(&text, "");
     let text = STYLE_REMOVE.get_or_init(|| Regex::new(r#"(?is)<style[^>]*>.*?</style>"#).unwrap()).replace_all(&no_scripts, "");
-    let markdown_text: String = parse_html(&text);
+    let markdown_text: String = rewrite_html(&text,false);
     markdown_text.lines().map(str::trim).filter(|line| !line.is_empty()).collect::<Vec<_>>().join("\n")
   }
 

@@ -6,7 +6,6 @@ use crate::source::*;
 
 #[derive(Clone)]
 pub(crate) struct CLI {
-  pub(crate) config: Config,
   pub(crate) source: Option<Source>,
   pub(crate) llm:    LLM,
 }
@@ -14,7 +13,6 @@ pub(crate) struct CLI {
 impl CLI {
   pub(crate) fn new(config: &Config) -> Self {
     Self {
-     config: config.clone(),
      source: Source::load(&config.get("source")),
      llm:    LLM::init(&config),
     }

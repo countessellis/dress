@@ -20,7 +20,4 @@ impl Fields {
     self.fields.insert(key.to_string(),value);
   }
 
-  pub fn get(&self,key: &str) -> Option<String> {
-    self.fields.get(key).cloned()
-  }
 }

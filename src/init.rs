@@ -28,6 +28,5 @@ pub fn run() {
       let help: Help = Help::new(&config);
       println!("{}",help);
     },
-    _ => log::error!("Mode {} not implemented.",mode),
   }
 }

@@ -19,10 +19,10 @@ path = "src/lib.rs"
 [dependencies]
 crossbeam-channel = "0.5"
 env_logger = "0.11"
-html2md = "0.2"
+fast_html2md = "0.0.*"
 log = "0.4"
 mimalloc = "0.1"
-multipart_ng = "0.18"
+multipart_ng = { version = "0.18", default-features = false, features = ["server"] }
 nu-ansi-term = "0.50"
 openssl = { version = "0.10", features = ["vendored"] }
 regex = "1.13"
@@ -48,4 +48,3 @@ panic = "abort"
 debug-assertions = false
 overflow-checks = false
 package."*".opt-level = "s"
-

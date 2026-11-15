@@ -1,36 +1,9 @@
 use std::{
   env,
-  fs,
 };
 
 use crate::defaults::*;
 use crate::fields::*;
-
-pub(crate) fn build_path(path: &String, prefix: &String) -> String {
-  let prefix: String = prefix.strip_suffix('/').unwrap_or(prefix).to_string();
-  let mut parts: Vec<&str> = path.split("/").collect();
-  if !prefix.is_empty() {
-    parts.reverse();
-    parts.push(prefix.as_str());
-    parts.reverse();
-  }
-  let directory: String = parts[..parts.len()-1].join("/");
-  let file: String = parts[parts.len()-1].to_string();
-  if directory.is_empty() {
-    file.clone()
-  } else {
-    match fs::exists(&directory) {
-      Ok(true) => directory+"/"+&file,
-      Ok(false) => {
-        match fs::create_dir_all(&directory) {
-          Ok(()) => directory+"/"+&file,
-          Err(_) => path.clone(),
-        }
-      },
-      Err(_) => path.clone(),
-    }
-  }
-}
 
 pub(crate) fn bin_name() -> String {
   match env::current_exe() {

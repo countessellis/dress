@@ -1,4 +1,4 @@
-use crossbeam_channel::{unbounded,Receiver,Sender};
+use crossbeam_channel::{unbounded,Receiver};
 use multipart_ng::server::Multipart;
 use std::{
   collections::HashMap,
@@ -74,7 +74,6 @@ impl Web {
             let path = parsed_url.path().to_string();
             log::info!("Request received for on {}",path);
             thread::spawn({
-              let remote  = remote.clone();
               let mut llm = llm.clone();
               move || {
                 let mut fields: Fields = Fields::new(&HashMap::from([
@@ -130,7 +129,7 @@ Copyright &copy; {} {}
                       if let Some(content_type) = content_type && content_type.starts_with("multipart/form-data") && let Some(boundary) = content_type.split(';').map(|s| s.trim()).find(|s| s.starts_with("boundary=")).map(|s| s["boundary=".len()..].to_string()) {
                         log::debug!("Multipart payload found, parsing.");
                         let cursor = std::io::Cursor::new(&body);
-                        let mut multipart = multipart_ng::server::Multipart::with_body(cursor,boundary);
+                        let mut multipart = Multipart::with_body(cursor,boundary);
                         loop {
                           match multipart.read_entry() {
                             Ok(Some(mut field)) => {

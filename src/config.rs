@@ -48,10 +48,6 @@ impl Config {
     self.config.get(&parameter.to_string()).cloned().unwrap_or_default()
   }
 
-  pub fn set(&mut self, parameter: &String, value: &String) -> Option<String> {
-    self.config.insert(parameter.clone(),value.clone())
-  }
-
   pub fn from_defaults(&mut self) {
     log::debug!("Loading config with defaults.");
     self.config = HashMap::from([
@@ -60,23 +56,6 @@ impl Config {
       ("model".to_string(),DEFAULT_MODEL.to_string()),
       ("listen".to_string(),DEFAULT_LISTEN_ADDR.to_string()),
     ]);
-  }
-
-  pub fn to_string(&self) -> String {
-    log::debug!("Converting config to string.");
-    self.config.iter().map(|(parameter,value)| format!("{}: {}",parameter,value)).collect::<Vec<String>>().join("\n")
-  }
-
-  pub fn from_string(&mut self, source: &String) {
-    log::debug!("Reading config from provided string.");
-    for line in source.split("\n") {
-      let pair: Vec<&str> = line.split(":").collect();
-      if pair.len() > 1 {
-        let value: String = pair[1..].join(":").trim_start().to_string();
-        log::debug!("Saving parameter '{}' with value '{}' to config.",pair[0],value);
-        self.config.insert(pair[0].to_string(),value);
-      }
-    }
   }
 
   pub fn from_args(&mut self) {
