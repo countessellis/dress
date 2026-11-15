@@ -53,8 +53,7 @@ pub fn init() {
   env_logger::Builder::from_default_env()
     .filter_level(loglevel)
     .filter_module("ureq",log::LevelFilter::Info)
-    .filter_module("html5ever::tree_builder",log::LevelFilter::Info)
-    .filter_module("html5ever::tokenizer",log::LevelFilter::Info)
+    .filter_module("multipart_ng::server::boundary",log::LevelFilter::Info)
     .target(DEFAULT_LOG_TARGET.into_env_logger_target())
     .format(move |buf, record| {
       let msg = format!("{}", record.args());
