@@ -7,9 +7,10 @@ use std::{
 
 use crate::util;
 
+use crate::collections::Fields;
+
 use crate::config::*;
 use crate::defaults::*;
-use crate::fields::*;
 
 ///////////// LLM
 

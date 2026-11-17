@@ -1,10 +1,11 @@
 pub mod init;
 pub mod logger;
 
+pub(crate) mod collections;
+
 pub(crate) mod cli;
 pub(crate) mod config;
 pub(crate) mod defaults;
-pub(crate) mod fields;
 pub(crate) mod help;
 pub(crate) mod llm;
 pub(crate) mod mode;

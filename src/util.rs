@@ -2,8 +2,10 @@ use std::{
   env,
 };
 
+use crate::collections::Fields;
+
 use crate::defaults::*;
-use crate::fields::*;
+
 
 pub(crate) fn bin_name() -> String {
   match env::current_exe() {
