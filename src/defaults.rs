@@ -34,9 +34,12 @@ pub(crate) const DEFAULT_MODEL:       &str = "gemma3:4b-it-qat";
 pub(crate) const DEFAULT_DELAY:       u64  = 60;
 pub(crate) const DEFAULT_LISTEN_ADDR: &str = "0.0.0.0:13874";
 
-// Includes:
+// Splash:
+pub(crate) const SPLASH_COLOUR:          u8    = 139;
 pub(crate) const SPLASH_PNG:             &[u8] = include_bytes!("../resources/dress.png");
 pub(crate) const SPLASH_TXT:             &str  = include_str!("../resources/dress.txt");
+
+// Includes:
 pub(crate) const DRESS_SMALL_PNG:        &[u8] = include_bytes!("../resources/dress-small.png");
 pub(crate) const WATERMARK_PNG:          &[u8] = include_bytes!("../resources/watermark-small.png");
 pub(crate) const FAVICON_ICO:            &[u8] = include_bytes!("../resources/favicon.ico");
