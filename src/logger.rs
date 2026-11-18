@@ -63,10 +63,9 @@ pub fn init() {
     Err(_)    => DEFAULT_LOG_LEVEL,
   };
 
-  env_logger::Builder::from_default_env()
+  let mut builder = env_logger::Builder::from_default_env();
+  builder
     .filter_level(loglevel)
-    .filter_module("ureq",log::LevelFilter::Info)
-    .filter_module("multipart_ng::server::boundary",log::LevelFilter::Info)
     .target(DEFAULT_LOG_TARGET.into_env_logger_target())
     .format(move |buf, record| {
       let msg = format!("{}", record.args());
@@ -91,7 +90,10 @@ pub fn init() {
       } else {
         writeln!(buf, "[{}] {}", metadata.join(" "), msg)
       }
-    })
-    .init();
+    });
+  for &module in DEFAULT_LOG_NO_DEBUG_MODULES {
+    builder.filter_module(module,log::LevelFilter::Info);
+  }
+  builder.init();
 }
 

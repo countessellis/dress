@@ -26,6 +26,11 @@ pub(crate) const DEFAULT_LOG_FILE:             &'static str                     
 pub(crate) const DEFAULT_LOG_TARGET:           LogTarget                                   = LogTarget::Stdout;
 //pub(crate) const DEFAULT_LOG_TARGET:           LogTarget                                   = LogTarget::File(DEFAULT_LOG_DIR, DEFAULT_LOG_FILE);
 
+pub(crate) const DEFAULT_LOG_NO_DEBUG_MODULES: &[&str] = &[
+  "ureq",
+  "multipart_ng::server::boundary",
+];
+
 // Dress Defaults:
 pub(crate) const DEFAULT_MODE:        &str = "cli";
 pub(crate) const MODE_LIST:           &[&str] = &[ "cli","web","help"];
