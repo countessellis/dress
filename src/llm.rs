@@ -7,9 +7,8 @@ use std::{
 
 use crate::util;
 
-use crate::collections::Fields;
+use crate::collections::{Config,Fields};
 
-use crate::config::*;
 use crate::defaults::*;
 
 ///////////// LLM

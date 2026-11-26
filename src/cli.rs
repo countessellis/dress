@@ -1,4 +1,5 @@
-use crate::config::*;
+use crate::collections::Config;
+
 use crate::llm::*;
 use crate::source::*;
 

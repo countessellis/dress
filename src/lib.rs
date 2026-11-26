@@ -1,7 +1,7 @@
 pub mod init;
 pub mod logger;
 
-pub(crate) mod collections;
+pub mod collections;
 
 pub(crate) mod cli;
 pub(crate) mod config;

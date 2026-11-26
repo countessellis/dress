@@ -11,9 +11,8 @@ use tiny_http::{Header,Request,Response};
 use url::{Url,form_urlencoded};
 
 use crate::util;
-use crate::collections::Fields;
+use crate::collections::{Config,Fields};
 
-use crate::config::*;
 use crate::defaults::*;
 use crate::llm::*;
 use crate::source::*;
