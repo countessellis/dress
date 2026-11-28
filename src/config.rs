@@ -22,6 +22,7 @@ pub(crate) fn init() -> Config {
       "--web".to_string(),
       "--help".to_string(),
     ],
+    arguments: Vec::new(),
     flags: HashMap::new(),
   };
   configurator.to_config()

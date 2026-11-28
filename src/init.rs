@@ -12,24 +12,29 @@ use crate::web::*;
 ///////////// Run
 
 pub fn run() {
-  println!("{}",splash());
-  println!("{}",version());
   log::info!("{}",version());
   let config: Config = config::init();
   log::info!("{}",config);
   let mode: Mode = Mode::mode();
   match mode {
     Mode::CLI => {
+      println!("{}",splash());
+      println!("{}",version());
       let mut cli: CLI = CLI::new(&config);
       cli.analyze();
     },
     Mode::Web => {
+      println!("{}",splash());
+      println!("{}",version());
       let mut web: Web = Web::new(&config);
       web.listen();
     },
     Mode::Help => {
       let help: Help = Help::new(&config);
       println!("{}",help);
+    },
+    Mode::Version => {
+      println!("{}",version());
     },
   }
 }
