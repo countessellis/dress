@@ -65,10 +65,10 @@ impl Mode {
           },
           None        => {},
         },
-        "--cli"     => return Mode::CLI,
-        "--web"     => return Mode::Web,
-        "--help"    => return Mode::Help,
-        "--version" => return Mode::Version,
+        "--cli"          => return Mode::CLI,
+        "--web"          => return Mode::Web,
+        "--help"|"-h"    => return Mode::Help,
+        "--version"|"-V" => return Mode::Version,
         _ => {},
       }
     }
