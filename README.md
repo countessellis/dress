@@ -17,6 +17,7 @@ A few notes:
 
 ## Usage
 
+```
 Usage: dress [(OPTIONS)]
 
   A utility to find the dressings.
@@ -24,11 +25,15 @@ Usage: dress [(OPTIONS)]
 Options:
 
   --mode <MODE>                        Mode to run in (default: cli, choices: cli, web, help)
+
   --llm_server                         LLM server to interpret  the text, ollama compatible, (default: http://localhost:11434/api/generate)
   --model                              LLM model to use to interpret the text (default: gemma3:4b-it-qat)
   --listen                             In web mode, address and port to listen on (default: 0.0.0.0:13874)
   --source                             The text source, which can be a URL or a file path, no default.
+
   --help                               Display this help message
+  --version                            Display the version
+```
 
 ## Reference:
 
