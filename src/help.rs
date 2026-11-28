@@ -24,8 +24,8 @@ impl fmt::Display for Help {
       format!("  --listen                             In web mode, address and port to listen on (default: {})",DEFAULT_LISTEN_ADDR),
       format!("  --source                             The text source, which can be a URL or a file path, no default."),
       format!(""),
-      format!("  --help                               Display this help message"),
-      format!("  --version                            Display the version"),
+      format!("  --help | -h                          Display this help message"),
+      format!("  --version | -V                       Display the version"),
     ];
     let fields: Fields = Fields::new(&HashMap::from([
       ("RUNAS",self.config.get("ranas")),

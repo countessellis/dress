@@ -31,8 +31,8 @@ Options:
   --listen                             In web mode, address and port to listen on (default: 0.0.0.0:13874)
   --source                             The text source, which can be a URL or a file path, no default.
 
-  --help                               Display this help message
-  --version                            Display the version
+  --help | -h                          Display this help message
+  --version | -V                       Display the version
 ```
 
 ## Reference:
